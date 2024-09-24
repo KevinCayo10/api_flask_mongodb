@@ -7,22 +7,20 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 # from app.spiders.marcimex1 import MarcimexSpider
 from spiders.novicompu import NovicompuSpider
+from spiders.hp import HpSpider
 import settings as my_settings
 def main():
     # Obtiene la configuración del proyecto Scrapy
     print("ANTES DEL PIPELINE")
     settings = get_project_settings()
+    # Agrega el setting personalizado
     settings.setmodule(my_settings)
-        # Configura para guardar en JSON
-    # settings.set('FEED_FORMAT', 'json')
-    # settings.set('FEED_URI', 'products.json')
-    print("SETTINGS PIPELINE : ",settings.get("MONGODB_SERVER"))
-
-    # Configura el proceso del crawler con las configuraciones obtenidas
+    
     process = CrawlerProcess(settings)
     
     # Inicia el crawler con el nombre del spider
     process.crawl(NovicompuSpider)
+    # process.crawl(HpSpider)
     # # process.crawl(ArtefactaSpider)
     # process.crawl(HpSpider)
     process.start()

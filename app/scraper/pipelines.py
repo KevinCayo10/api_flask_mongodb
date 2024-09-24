@@ -23,7 +23,7 @@ class MongoPipeline:
   
   def open_spider(self, spider):
     # Conexión a MongoDB
-    self.client = pymongo.MongoClient(self.mongo_uri)
+    self.client = pymongo.MongoClient(self.mongo_uri, tls=True, tlsAllowInvalidCertificates=True)
     self.db = self.client[self.mongo_db]
     print("Connected to MongoDB:", self.mongo_uri)
     

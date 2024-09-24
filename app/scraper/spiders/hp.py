@@ -27,7 +27,6 @@ class HpSpider(CrawlSpider):
         driver = webdriver.Chrome(options=chrome_options)
         driver.maximize_window()
         driver.get(self.start_urls[0])
-        time.sleep(5)
 
         xpath_element_card = '//div[@class="c-search-results__items"]//div[@class="c-product-tile__content"]//div[@class="c-product-tile__main-content"]//div[@class="c-product-tile__media-wrapper"]/a'
         url_array = []
