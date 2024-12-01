@@ -5,9 +5,9 @@ import socketio
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from spiders.novicompu import NovicompuSpider
-from spiders.hp import HpSpider
 import settings as my_settings
+from spiders.utils.store_config import store_config
+from spiders.spider import GenericSpider
 
 io = socketio.Client()
 
@@ -30,10 +30,8 @@ def main():
     # Configura el proceso del crawler con las configuraciones obtenidas
     process = CrawlerProcess(settings)
     
-    # Inicia el crawler con el nombre del spider
-    process.crawl(NovicompuSpider)
-    # # process.crawl(ArtefactaSpider)
-    process.crawl(HpSpider)
+    for store_name, config in store_config.items():
+            process.crawl(GenericSpider, store_name=store_name)
     process.start()
     
     io.emit("mensaje",{"status":"Scraping completado"})
