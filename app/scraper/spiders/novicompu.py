@@ -36,13 +36,6 @@ class NovicompuSpider(CrawlSpider):
         xpath_element_card = '//section[contains(@class,"vtex-product-summary")]/a'
         url_array = []
         while True:
-            try:
-                # Intentar cerrar un modal si aparece
-                close_button = driver.find_element(By.XPATH, '//div[@class="kevin"]')
-                close_button.click()
-            except:
-                pass  # Si no se puede cerrar el modal, continua
-
             # Obtener los enlaces de cada producto
             link_elements = driver.find_elements(By.XPATH, xpath_element_card)
 
@@ -65,11 +58,6 @@ class NovicompuSpider(CrawlSpider):
             i=i+1 
             yield Request(url, callback=self.parse_product)
             
-    # def parse(self, response):
-    #     links = response.xpath('//section[contains(@class,"vtex-product-summary")]/a/@href').getall()
-    #     for href in links:
-    #         href = response.urljoin(href)
-    #         yield Request(href, callback=self.parse_product)
 
     def parse_product(self, response):
         item = ProductItemNovicompu()
@@ -77,38 +65,24 @@ class NovicompuSpider(CrawlSpider):
           title = response.xpath('//div[contains(@class,"product-main")]//span[contains(@class,"productBrand--product")]/text()').get()
           print("TITLE : ", title)
           item["title"] = title
-        except:
-          print("error")
-          pass       
-        
-        try:
           url = response.url
           print("URL : ",url)
           item["link"] = url
-        except:
-          print("error")
-          pass
         
-        try:
           urlImg = response.xpath("//div[contains(@class,'product-main')]//div[contains(@class,'items-stretch')]//div[contains(@class,'productImage')]//img/@src").get()
           print("IMG URL : ",urlImg)
           item["link"] = urlImg
-        except:
-          print("error")
-          pass
-         
-        try:
           price_parts = response.xpath("//div[contains(@class,'product-main')]//div[contains(@class,'items-stretch')]//span[contains(@class,'product-price-1-x-currencyContainer')]//span/text()").getall()
           price = ''.join(price_parts)
           print("PRICE : ",price)
           item['price'] = price
-        except:
-          print("error")
-          pass
-        try:
           description = response.xpath("//div[contains(@class,'product-main')]//div[contains(@class,'productDescriptionText')]/div/text()").getall()
           print("DESCRIPTION : ",description)
-          item["description"] = description
+          description_all = " ".join(description)
+          description_all = description_all.replace("\r\n",' ').replace("\n",' ').strip()
+          description_all = " ".join(description_all.split())
+          item["description"] = description_all
+          item["category"] = "Computadoras"
         except:
           print("error")
           pass

@@ -31,13 +31,6 @@ class MarcimexSpiderSelenium:
 
         url_array = []
         while True:
-            try:
-                # Cerrar el modal si aparece
-                close_button = self.driver.find_element(By.XPATH, '//div[@class="kevin"]')
-                close_button.click()
-            except:
-                pass
-
             # Obtén las URLs de los productos
             link_elements = self.driver.find_elements(By.XPATH, '//div[@id="gallery-layout-container"]//section[contains(@class,"vtex-product-summary")]/a')
             for link in link_elements:

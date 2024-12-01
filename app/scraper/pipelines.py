@@ -32,7 +32,8 @@ class MongoPipeline:
     self.client.close()
     
   def process_item(self, item, spider):
+    
     # Inserta el item en la colección especificada
-    result = self.db[self.mongo_collection].insert_one(dict(item))
+    result = self.db[item["category"]].insert_one(dict(item))
     print("Inserted Item ID:", result.inserted_id)  # Muestra el ID del documento insertado
     return item

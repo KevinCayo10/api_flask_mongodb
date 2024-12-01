@@ -33,13 +33,7 @@ class HpSpider(CrawlSpider):
         item_count = 0  # Contador de productos extraídos
 
         while item_count < self.max_items:  # Limita el número de productos
-            try:
-                # Intentar cerrar un modal si aparece
-                close_button = driver.find_element(By.XPATH, '//div[@class="kevin"]')
-                close_button.click()
-            except:
-                pass  # Si no se puede cerrar el modal, continúa
-
+           
             # Obtener los enlaces de cada producto
             link_elements = driver.find_elements(By.XPATH, xpath_element_card)
 
@@ -74,14 +68,10 @@ class HpSpider(CrawlSpider):
             title = response.xpath('//div[contains(@class,"c-product-details__main")]//div[contains(@class,"h1")]/text()').get()
             print("TITLE : ", title)
             item["title"] = title
-        except:
-            print("Error al obtener el título")
-            pass
-
-        try:
             url = response.url
             print("URL : ", url)
             item["link"] = url
+            item["category"]="Laptop"
         except:
             print("Error al obtener la URL")
             pass

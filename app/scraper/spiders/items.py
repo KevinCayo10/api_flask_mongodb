@@ -6,6 +6,7 @@ class ProductItemNovicompu(scrapy.Item):
    link = scrapy.Field()
    description = scrapy.Field()
    urlImg = scrapy.Field()
+   category=scrapy.Field()
    
 class ProductItemArtefacta(scrapy.Item):
    title= scrapy.Field()
@@ -33,3 +34,4 @@ class ProductItemHp(scrapy.Item):
     link = scrapy.Field()
     description = scrapy.Field()
     urlImg = scrapy.Field()
+    category = scrapy.Field()

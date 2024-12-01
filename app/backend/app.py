@@ -1,22 +1,22 @@
-from flask import Flask, request, jsonify
-import subprocess
+from flask import Flask, render_template
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
-@app.route("/")
+@app.route('/')
 def index():
-  return "Hello World!"
+    return "SocketIO Server Running"
 
-# @app.route("/artefacta",methods=["POST"])
-# def scrape():
-#   params = request.json
-#   process = subprocess.Popen(['python', 'mi_script_de_scraping.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+@socketio.on('connect')
+def handle_connect():
+    print("Client connected")
+    emit('response', {'message': 'Connected to Flask-SocketIO!'})
 
-#     # Retorna inmediatamente una respuesta sin esperar a que el scraping termine
-#   return jsonify({"status": "Scraping iniciado en segundo plano", "pid": process.pid})
+@socketio.on('mensaje')
+def handle_message(data):
+    print(f"Message received: {data}")
+    emit('response', {'message': f"Message '{data}' received!"})
 
-  
-
-if __name__=='__main__':
-  app.run(debug=True)
-  
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0', port=5000)
